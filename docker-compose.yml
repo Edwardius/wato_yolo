@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  yolo:
+    build:
+      context: .
+      dockerfile: yolo.Dockerfile
+    image: git.uwaterloo.ca:5050/watonomous/registry/object-detection/yolo
+    volumes:
+      - /mnt/wato-drive/perception_2d/road_sign_data:/wato_road_sign_data
+      - ./yolov5:/project/yolov5
+    ipc: host
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['1'] # Change to ['0', '1'] to use two GPUs
+            capabilities: [gpu]
